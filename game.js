@@ -79,6 +79,9 @@ function userAction ()
         col = Math.floor(event.pageY / (field.width + field.padding));
         //Определяем в какую ячейку нажал пользователь.
 
+        //alert(row);
+        //alert(col);
+
         if (currentStep == 1)
         {
             field.drawCross(row,col,event.pageX,event.pageY);
@@ -98,6 +101,24 @@ function userAction ()
             currentStep = 1;
         }
 
+    }
+
+    winCheck();
+}
+
+function winCheck ()
+{
+    if((field.arrayElement[0][0] == 1) && 
+       (field.arrayElement[1][0] == 1) &&
+       (field.arrayElement[2][0] == 1))
+    {
+        alert("win");
+    }
+    else if((field.arrayElement[0][1] == 1) && 
+            (field.arrayElement[1][1] == 1) &&
+            (field.arrayElement[2][1] == 1))
+    {
+        alert("win");
     }
 }
 
