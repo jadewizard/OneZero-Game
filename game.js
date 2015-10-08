@@ -96,7 +96,17 @@ function drawWinWindow (player)
     context.globalCompositeOperation = "xor";
     context.fillStyle = "#FFF";
     context.font = "54px Arial";
-    context.fillText("PLAYER 1 WIN!", 452 / 15, 452 / 2);
+    if (player == 1)
+    {
+        context.fillText("PLAYER 1 WIN!", 452 / 15, 452 / 2);
+    }
+    else
+    {
+        context.fillText("PLAYER 2 WIN!", 452 / 15, 452 / 2);
+    }
+
+    context.font = "35px Arial";
+    context.fillText("click to new game.", 452 / 15, 270);
 
     gameMod = 1; //Если гейммод = 1, то значит есть победитель.
 }
@@ -149,13 +159,31 @@ function winCheck ()
         if (field.arrayElement[0][i] != undefined &&
             field.arrayElement[0][i] == field.arrayElement[1][i] &&
             field.arrayElement[0][i] == field.arrayElement[2][i])
-            drawWinWindow(1);
+        {
+            if (field.arrayElement[0][i] == 1)
+            {
+                drawWinWindow(1);
+            }
+            else
+            {
+                drawWinWindow(2);
+            }
+        }
         //Проверка строк
 
         if (field.arrayElement[i][0] != undefined &&
             field.arrayElement[i][0] == field.arrayElement[i][1] &&
             field.arrayElement[i][0] == field.arrayElement[i][2])
-            drawWinWindow(1);
+        {
+            if (field.arrayElement[i][0] == 1)
+            {
+                drawWinWindow(1);
+            }
+            else
+            {
+                drawWinWindow(2);
+            }
+        }
         //Поверка столбцов
 
         if (field.arrayElement[0][0] != undefined &&
