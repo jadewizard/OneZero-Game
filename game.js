@@ -1,42 +1,32 @@
 //window.onload = init();
 
-function field (width,height)
+function game (width,height)
 {
     this.width = width;
     this.height = height;
     this.padding = 2;
 
-    gridArray = new Array(3);
-
-    for (i = 0; i < 4; i++)
-    {
-        gridArray[i] = new Array(3);
-
-        for(j = 0; j < 4; j++)
-        {
-            gridArray[i][j] = undefined;
-        }
-    }
-
-    this.arrayElement = gridArray;
-
-    this.newGame = function (argument)
+    this.newGame = function ()
     {
         gameMod = 0;
+        gridArray = new Array(3);
         
         for (i = 0; i < 4; i++)
         {
+            gridArray[i] = new Array(3);
+
             for(j = 0; j < 4; j++)
             {
-                this.arrayElement[i][j] = undefined;
+                gridArray[i][j] = undefined;
             }
         }
+        this.arrayElement = gridArray; //Записываем массив в глобальную переменную.
 
         context.clearRect(0,0,480,480);
-        this.draw();
+        this.drawField();
     }
 
-    this.draw = function (x)
+    this.drawField = function (x)
     {
         this.x = x;
         for (i = 0; i < 3; i++)
@@ -56,7 +46,7 @@ function field (width,height)
         }
     }
 
-    this.drawCross = function (row,col,x,y)
+    this.drawUnit = function (row,col,x,y)
     {
         this.row = row;
         this.col = col;
@@ -117,8 +107,8 @@ function userAction ()
     {
         if (gameMod == 0)
         {
-            row = Math.floor(event.pageX / (field.height + field.padding));
-            col = Math.floor(event.pageY / (field.width + field.padding));
+            row = Math.floor(event.pageX / (game.height + game.padding));
+            col = Math.floor(event.pageY / (game.width + game.padding));
             //Определяем в какую ячейку нажал пользователь.
 
             //alert(row);
@@ -126,18 +116,18 @@ function userAction ()
 
             if (currentStep == 1)
             {
-                field.drawCross(row,col,event.pageX,event.pageY);
+                game.drawUnit(row,col,event.pageX,event.pageY);
                 //Рисуем крестик
-                field.arrayElement[row][col] = 1;
+                game.arrayElement[row][col] = 1;
                 //Устанавлием значение элемента массива (rpw,col) = 1
                 //Если элемент массива = 1, то значит он уже занят.
                 currentStep = 0;
             }
             else
             {
-                field.drawZero(row,col,event.pageX,event.pageY);
+                game.drawZero(row,col,event.pageX,event.pageY);
                 //Рисуем крестик
-                field.arrayElement[row][col] = 0;
+                game.arrayElement[row][col] = 0;
                 //Устанавлием значение элемента массива (rpw,col) = 1
                 //Если элемент массива = 1, то значит он уже занят.
                 currentStep = 1;
@@ -145,7 +135,7 @@ function userAction ()
         }
         else
         {
-            field.newGame();
+            game.newGame();
         }
     }
 
@@ -156,11 +146,11 @@ function winCheck ()
 {
     for(i = 0; i < 3; i++)
     {
-        if (field.arrayElement[0][i] != undefined &&
-            field.arrayElement[0][i] == field.arrayElement[1][i] &&
-            field.arrayElement[0][i] == field.arrayElement[2][i])
+        if (game.arrayElement[0][i] != undefined &&
+            game.arrayElement[0][i] == game.arrayElement[1][i] &&
+            game.arrayElement[0][i] == game.arrayElement[2][i])
         {
-            if (field.arrayElement[0][i] == 1)
+            if (game.arrayElement[0][i] == 1)
             {
                 drawWinWindow(1);
             }
@@ -171,11 +161,11 @@ function winCheck ()
         }
         //Проверка строк
 
-        if (field.arrayElement[i][0] != undefined &&
-            field.arrayElement[i][0] == field.arrayElement[i][1] &&
-            field.arrayElement[i][0] == field.arrayElement[i][2])
+        if (game.arrayElement[i][0] != undefined &&
+            game.arrayElement[i][0] == game.arrayElement[i][1] &&
+            game.arrayElement[i][0] == game.arrayElement[i][2])
         {
-            if (field.arrayElement[i][0] == 1)
+            if (game.arrayElement[i][0] == 1)
             {
                 drawWinWindow(1);
             }
@@ -186,18 +176,18 @@ function winCheck ()
         }
         //Поверка столбцов
 
-        if (field.arrayElement[0][0] != undefined &&
-            field.arrayElement[1][1] != undefined &&
-            field.arrayElement[2][2] != undefined &&
-            field.arrayElement[0][0] == field.arrayElement[1][1] &&
-            field.arrayElement[1][1] == field.arrayElement[2][2])
+        if (game.arrayElement[0][0] != undefined &&
+            game.arrayElement[1][1] != undefined &&
+            game.arrayElement[2][2] != undefined &&
+            game.arrayElement[0][0] == game.arrayElement[1][1] &&
+            game.arrayElement[1][1] == game.arrayElement[2][2])
             drawWinWindow(1);
 
-        if (field.arrayElement[0][2] != undefined &&
-            field.arrayElement[1][1] != undefined &&
-            field.arrayElement[2][0] != undefined &&
-            field.arrayElement[0][2] == field.arrayElement[1][1] &&
-            field.arrayElement[1][1] == field.arrayElement[2][0])
+        if (game.arrayElement[0][2] != undefined &&
+            game.arrayElement[1][1] != undefined &&
+            game.arrayElement[2][0] != undefined &&
+            game.arrayElement[0][2] == game.arrayElement[1][1] &&
+            game.arrayElement[1][1] == game.arrayElement[2][0])
             drawWinWindow(1);
         //Проверка диагоналей
     }
@@ -220,8 +210,8 @@ function init()
     gameMod = 0; //Если 0, то победителя ещё нет // новая игра.
     
     //Рисуем игровое поле и сетку
-    field = new field(150,150);
-    field.draw();
+    game = new game(150,150);
+    game.newGame();
     //Таймер
     setInterval(userAction,10);
 }
